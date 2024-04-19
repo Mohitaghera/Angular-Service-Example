@@ -1,0 +1,72 @@
+<div class="container">
+  <div class="search-container">
+    <input
+      type="text"
+      [(ngModel)]="searchItem"
+      placeholder="Search here..."
+      class="search-input"
+    />
+    <button class="search-btn" (click)="filterData()">Search</button>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>
+          Id<span class="sort-icon" (click)="sortByColumn('id')">
+            <i class="fa fa-sort"></i>
+          </span>
+        </th>
+        <th>
+          Name<span class="sort-icon" (click)="sortByColumn('firstName')">
+            <i class="fa fa-sort"></i>
+          </span>
+        </th>
+        <th>
+          Age<span class="sort-icon" (click)="sortByColumn('age')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </span>
+        </th>
+        <th>
+          Gender<span class="sort-icon" (click)="sortByColumn('gender')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </span>
+        </th>
+        <th (click)="sortByColumn('email')">
+          Email<span class="sort-icon" (click)="sortByColumn('email')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </span>
+        </th>
+        <th>
+          Phone<span class="sort-icon" (click)="sortByColumn('phone')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </span>
+        </th>
+        <th>
+          Height<span class="sort-icon" (click)="sortByColumn('height')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </span>
+        </th>
+        <th>
+          Weight<span class="sort-icon" (click)="sortByColumn('weight')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="let user of searchedUser; let i = index"
+        [ngClass]="{ 'even-row': i % 2 === 0, 'odd-row': i % 2 !== 0 }"
+      >
+        <td>{{ user.id }}</td>
+        <td>{{ user.firstName }}</td>
+        <td>{{ user.age }}</td>
+        <td>{{ user.gender }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.phone }}</td>
+        <td>{{ user.height }}</td>
+        <td>{{ user.weight }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
