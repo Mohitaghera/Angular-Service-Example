@@ -5,6 +5,7 @@
       [(ngModel)]="searchItem"
       placeholder="Search here..."
       class="search-input"
+      (keyup.enter)="filterData()"
     />
     <button class="search-btn" (click)="filterData()">Search</button>
   </div>

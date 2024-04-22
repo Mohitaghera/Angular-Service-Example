@@ -17,6 +17,7 @@ export class TableComponent implements OnInit {
   searchedUser: any[] = [];
   searchItem: string = '';
   sortBy: string = '';
+  isFiltered: boolean = false;
 
   constructor(private apiCallService: ApiCallService) {}
 
@@ -24,7 +25,7 @@ export class TableComponent implements OnInit {
     this.apiCallService.getUsers().subscribe((users: any) => {
       this.users = users.users;
       this.searchedUser = [...this.users];
-      console.log(this.users);
+      // console.log(this.users);
     });
   }
 
@@ -53,19 +54,25 @@ export class TableComponent implements OnInit {
 
   filterData() {
     if (!this.searchItem.trim()) {
+      this.isFiltered = false;
       this.searchedUser = [...this.users];
-      return;
+    } else {
+      this.isFiltered = true;
+      const searchText = this.searchItem.toLowerCase().trim();
+      this.searchedUser = this.users.filter(
+        (user) =>
+          user.id.toString().includes(searchText) ||
+          user.firstName.toLowerCase().includes(searchText) ||
+          user.age.toString().includes(searchText) ||
+          user.gender.toLowerCase().includes(searchText) ||
+          user.email.toLowerCase().includes(searchText) ||
+          user.phone.includes(searchText) ||
+          user.height.toString().includes(searchText) ||
+          user.weight.toString().includes(searchText)
+      );
     }
-
-    const searchTerm = this.searchItem.toLowerCase().trim();
-    this.searchedUser = this.users.filter((user) =>
-      Object.values(user).some((val) =>
-        String(val).toLowerCase().includes(searchTerm)
-      )
-    );
     this.sortData();
   }
-
   sortByColumn(column: string) {
     this.sortBy = column;
     this.sortData();
