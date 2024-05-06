@@ -18,6 +18,7 @@ export class TableComponent implements OnInit {
   searchItem: string = '';
   sortBy: string = '';
   isFiltered: boolean = false;
+  isSorted: boolean = false;
 
   constructor(private apiCallService: ApiCallService) {}
 
@@ -25,7 +26,6 @@ export class TableComponent implements OnInit {
     this.apiCallService.getUsers().subscribe((users: any) => {
       this.users = users.users;
       this.searchedUser = [...this.users];
-      // console.log(this.users);
     });
   }
 
@@ -42,13 +42,24 @@ export class TableComponent implements OnInit {
           ? b[this.sortBy].toLowerCase()
           : b[this.sortBy];
 
-      if (valA < valB) {
-        return -1;
-      } else if (valA > valB) {
-        return 1;
-      } else {
-        return 0;
+      if(this.isSorted === true){
+        if (valA < valB) {
+          return -1;
+        } else if (valA > valB) {
+          return 1;
+        } else {
+          return 0;
+        }
+      }else{
+        if (valA < valB) {
+          return 1;
+        } else if (valA > valB) {
+          return -1;
+        } else {
+          return 0;
+        }
       }
+      
     });
   }
 
@@ -74,7 +85,11 @@ export class TableComponent implements OnInit {
     this.sortData();
   }
   sortByColumn(column: string) {
+    if(this.sortBy != column){
+      this.isSorted = false
+    }
     this.sortBy = column;
+    this.isSorted = !this.isSorted;
     this.sortData();
   }
 }
