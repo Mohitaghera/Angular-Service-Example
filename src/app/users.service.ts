@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class ApiCallService {
+export class UsersService {
   constructor(private http: HttpClient) {}
 
   getUsers(): Observable<any[]> {

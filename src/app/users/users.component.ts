@@ -1,29 +1,31 @@
-import { Component, OnInit } from '@angular/core';
-import { ApiCallService } from '../api-call.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { UsersService } from '../users.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-table',
+  selector: 'app-users',
   standalone: true,
   imports: [FormsModule, CommonModule, HttpClientModule],
-  providers: [ApiCallService],
-  templateUrl: './table.component.html',
-  styleUrl: './table.component.css',
+  providers: [UsersService],
+  templateUrl: './users.component.html',
+  styleUrl: './users.component.css',
 })
-export class TableComponent implements OnInit {
+export class UsersComponent implements OnInit , OnDestroy{
   users: any[] = [];
   searchedUser: any[] = [];
   searchItem: string = '';
   sortBy: string = '';
   isFiltered: boolean = false;
   isSorted: boolean = false;
+  userSub!: Subscription;
 
-  constructor(private apiCallService: ApiCallService) {}
+  constructor(private userService: UsersService) {}
 
   ngOnInit() {
-    this.apiCallService.getUsers().subscribe((users: any) => {
+    this.userSub = this.userService.getUsers().subscribe((users: any) => {
       this.users = users.users;
       this.searchedUser = [...this.users];
     });
@@ -34,7 +36,7 @@ export class TableComponent implements OnInit {
 
     this.searchedUser.sort((a, b) => {
       const valA =
-        typeof a[this.sortBy] === 'string'
+        typeof a[this.sortBy] === 'string' 
           ? a[this.sortBy].toLowerCase()
           : a[this.sortBy];
       const valB =
@@ -91,5 +93,9 @@ export class TableComponent implements OnInit {
     this.sortBy = column;
     this.isSorted = !this.isSorted;
     this.sortData();
+  }
+
+  ngOnDestroy(): void {
+   this.userSub.unsubscribe();   
   }
 }
